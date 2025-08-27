@@ -7,7 +7,7 @@
     <ul>
       <% messages.map((message) => { %>
       <li>
-        <b>USER:</b> <%= message.user %> 
+        <b>USER:</b> <%= message.username %> 
         <b>TEXT:</b> <%= message.text %> 
         <b>ADDED:</b> <%= message.added.toLocaleString() %>
         <a href="/messages/<%= message.id %>">Open</a>
