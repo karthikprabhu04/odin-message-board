@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { messages, state } = require("./index");
+const db = require("../db/queries");
 
 const newRouter = Router();
 
