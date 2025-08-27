@@ -15,7 +15,7 @@ app.use("/", homeRouter);
 app.use("/new", newRouter);
 
 // Start server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
   if (error) {
     throw error;
