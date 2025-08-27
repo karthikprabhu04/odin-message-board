@@ -3,32 +3,17 @@ const db = require("../db/queries");
 
 const homeRouter = Router();
 
-const messages = [
-  {
-    id: 1,
-    text: "Hi there!",
-    user: "Amando",
-    added: new Date()
-  },
-  {
-    id: 2,
-    text: "Hello World!",
-    user: "Charles",
-    added: new Date()
-  }
-];
-
-const state = { lastId: 2 };
-
-homeRouter.get("/", (req, res) => {
-  res.render("index", { title: "Mini Messageboard", messages: messages })
+homeRouter.get("/", async (req, res) => {
+  const messages = await db.getMessages();
+  res.render("index", { title: "Mini Messageboard", messages: messages });
 });
 
-homeRouter.get("/messages/:id", (req, res) => {
+homeRouter.get("/messages/:id", async (req, res) => {
+  const messages = await db.getMessages();
   const msgId = parseInt(req.params.id);
-  const message = messages.find(m => m.id === msgId);
+  const message = messages.find((m) => m.id === msgId);
   if (!message) return res.status(404).send("Message not found");
-  res.render("messageDetails", {message});
-})
+  res.render("messageDetails", { message });
+});
 
-module.exports = {homeRouter, messages, state};
+module.exports = { homeRouter };
