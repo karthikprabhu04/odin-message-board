@@ -17,13 +17,36 @@ VALUES
 
 async function main() {
   console.log("seeding...");
+
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
   });
-  await client.connect();
-  await client.query(SQL);
-  await client.end();
-  console.log("done");
+
+  try {
+    await client.connect();
+
+    await client.query(SQL);
+
+    const { rows } = await client.query("SELECT COUNT(*) FROM messages");
+    if (parseInt(rows[0].count) > 0) {
+      console.log("Database already seeded, skipping inserts...");
+      return;
+    }
+
+    for (const msg of messages) {
+      await client.query(
+        "INSERT INTO messages (text, username) VALUES ($1, $2)",
+        [msg.text, msg.username]
+      );
+    }
+
+    console.log("Database seeded successfully!");
+  } catch (err) {
+    console.error("Seeding error:", err);
+  } finally {
+    await client.end();
+    console.log("done");
+  }
 }
 
 main();
