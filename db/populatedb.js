@@ -34,7 +34,7 @@ async function main() {
 
     for (const msg of messages) {
       await client.query(
-        "INSERT INTO messages (text, username, added) VALUES ($1, $2)",
+        "INSERT INTO messages (text, username) VALUES ($1, $2)",
         [msg.text, msg.username]
       );
     }
